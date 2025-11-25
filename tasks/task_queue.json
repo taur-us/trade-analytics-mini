@@ -1,0 +1,118 @@
+{
+  "backlog": [
+    {
+      "id": "CORE-001",
+      "title": "Create data models and exceptions",
+      "description": "Create core data models for trades, positions, and market data. Include custom exception hierarchy for trading errors (InvalidTradeError, InsufficientFundsError, MarketClosedError).",
+      "priority": "CRITICAL",
+      "dependencies": [],
+      "estimated_hours": 1.0,
+      "model": "sonnet",
+      "status": "READY",
+      "acceptance_criteria": [
+        "Trade dataclass with: symbol, side, quantity, price, timestamp",
+        "Position dataclass with: symbol, quantity, avg_price, unrealized_pnl",
+        "MarketData dataclass with: symbol, bid, ask, last, volume",
+        "Custom exceptions in src/trade_analytics/exceptions.py",
+        "95%+ test coverage"
+      ],
+      "affects_files": [
+        "src/trade_analytics/models.py",
+        "src/trade_analytics/exceptions.py",
+        "tests/test_models.py"
+      ]
+    },
+    {
+      "id": "CORE-002",
+      "title": "Implement portfolio calculator",
+      "description": "Create portfolio analytics calculator that computes total value, P&L, exposure by symbol, and risk metrics. Uses the data models from CORE-001.",
+      "priority": "HIGH",
+      "dependencies": ["CORE-001"],
+      "estimated_hours": 1.5,
+      "model": "sonnet",
+      "status": "READY",
+      "acceptance_criteria": [
+        "PortfolioCalculator class in src/trade_analytics/calculator.py",
+        "calculate_total_value(positions, market_data) method",
+        "calculate_pnl(positions, market_data) method",
+        "calculate_exposure_by_symbol(positions) method",
+        "All methods have comprehensive tests",
+        "Handles edge cases: empty portfolio, missing market data"
+      ],
+      "affects_files": [
+        "src/trade_analytics/calculator.py",
+        "tests/test_calculator.py"
+      ],
+      "context": {
+        "notes": "This is the core analytics engine - quality is critical"
+      }
+    },
+    {
+      "id": "STORE-001",
+      "title": "Add SQLite storage layer",
+      "description": "Implement SQLite-based storage for trades and positions. Include CRUD operations and query methods for historical data.",
+      "priority": "HIGH",
+      "dependencies": ["CORE-001"],
+      "estimated_hours": 1.5,
+      "model": "sonnet",
+      "status": "READY",
+      "acceptance_criteria": [
+        "TradeStore class in src/trade_analytics/storage.py",
+        "save_trade(trade) and get_trades(symbol, start_date, end_date) methods",
+        "save_position(position) and get_positions() methods",
+        "SQLite database with proper schema",
+        "Context manager for connections",
+        "Tests use in-memory SQLite"
+      ],
+      "affects_files": [
+        "src/trade_analytics/storage.py",
+        "tests/test_storage.py"
+      ]
+    },
+    {
+      "id": "CLI-001",
+      "title": "Create CLI interface",
+      "description": "Build command-line interface using argparse. Commands: portfolio (show current positions), history (show trade history), analyze (run analytics on portfolio).",
+      "priority": "MEDIUM",
+      "dependencies": ["CORE-002", "STORE-001"],
+      "estimated_hours": 1.0,
+      "model": "sonnet",
+      "status": "READY",
+      "acceptance_criteria": [
+        "CLI entry point in src/trade_analytics/cli.py",
+        "Commands: portfolio, history, analyze",
+        "Pretty table output for positions",
+        "Date range filtering for history",
+        "Error handling with user-friendly messages"
+      ],
+      "affects_files": [
+        "src/trade_analytics/cli.py",
+        "tests/test_cli.py"
+      ]
+    },
+    {
+      "id": "DOC-001",
+      "title": "Write comprehensive documentation",
+      "description": "Create user documentation including installation, quick start, API reference, and examples.",
+      "priority": "LOW",
+      "dependencies": ["CLI-001"],
+      "estimated_hours": 0.5,
+      "model": "haiku",
+      "status": "READY",
+      "acceptance_criteria": [
+        "README.md with installation and quick start",
+        "docs/API.md with module documentation",
+        "docs/EXAMPLES.md with usage examples",
+        "All code examples are tested/verified"
+      ],
+      "affects_files": [
+        "README.md",
+        "docs/API.md",
+        "docs/EXAMPLES.md"
+      ]
+    }
+  ],
+  "in_progress": [],
+  "completed": [],
+  "failed": []
+}
