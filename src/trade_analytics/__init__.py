@@ -20,13 +20,18 @@ Example usage:
 from .calculator import PortfolioCalculator
 from .cli import main as cli_main
 from .exceptions import (
+    DatabaseConnectionError,
+    DuplicateRecordError,
     InsufficientFundsError,
     InvalidTradeError,
     MarketClosedError,
     MissingMarketDataError,
+    RecordNotFoundError,
+    StorageError,
     TradingError,
 )
 from .models import MarketData, Position, Trade, TradeSide
+from .storage import PositionRepository, SQLiteStorage, TradeRepository
 
 __all__ = [
     # Models
@@ -38,12 +43,20 @@ __all__ = [
     "PortfolioCalculator",
     # CLI
     "cli_main",
+    # Storage
+    "SQLiteStorage",
+    "TradeRepository",
+    "PositionRepository",
     # Exceptions
     "TradingError",
     "InvalidTradeError",
     "InsufficientFundsError",
     "MarketClosedError",
     "MissingMarketDataError",
+    "StorageError",
+    "RecordNotFoundError",
+    "DuplicateRecordError",
+    "DatabaseConnectionError",
 ]
 
 __version__ = "0.1.0"

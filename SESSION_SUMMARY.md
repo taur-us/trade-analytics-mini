@@ -90,51 +90,47 @@ Implemented `PortfolioCalculator` class with three static methods for portfolio 
 
 ---
 
-## CLI-001: Create CLI Interface
+## STORE-001: Add SQLite Storage Layer
 
-**Task ID:** CLI-001
-**Branch:** feat/20251126-063844-cli-001
+**Task ID:** STORE-001
+**Branch:** feat/20251126-062512-store-001
 **Status:** COMPLETE
-**Depends On:** CORE-001 (Completed), CORE-002 (Completed)
+**Depends On:** CORE-001 (Completed)
 
 ### Summary
 
-Implemented a command-line interface (CLI) using Python's argparse module. The CLI provides three main commands: `portfolio` (show positions), `history` (show trades), and `analyze` (run analytics).
+Implemented SQLite-based storage layer for persistent storage of trades and positions with thread-safe connection pooling.
 
 ### Files Created
 
 #### Source Files
-- `src/trade_analytics/cli.py` - CLI implementation with argparse parser and command handlers
-- `pyproject.toml` - Package configuration with CLI entry point
+- `src/trade_analytics/storage.py` - SQLite storage implementation:
+  - `SQLiteStorage` - Thread-safe database connection management
+  - `TradeRepository` - CRUD operations for trades
+  - `PositionRepository` - Query and upsert operations for positions
 
 #### Test Files
-- `tests/test_cli.py` - 53 comprehensive tests for CLI functionality
+- `tests/test_storage.py` - 53 comprehensive tests
 
 #### Documentation
-- `deliverables/CLI-001-SUMMARY.md` - Implementation summary
+- `deliverables/STORE-001-SUMMARY.md` - Implementation summary
 
 ### Files Modified
 
-- `src/trade_analytics/__init__.py` - Added `cli_main` export
+- `src/trade_analytics/exceptions.py` - Added storage exceptions:
+  - `StorageError`, `RecordNotFoundError`, `DuplicateRecordError`, `DatabaseConnectionError`
+- `src/trade_analytics/__init__.py` - Exported storage classes and exceptions
+- `tests/conftest.py` - Added storage fixtures and path configuration
 
 ### Test Results
 
 - **New Tests:** 53 passed
 - **Total Tests:** 144 passed
-- **Time:** 0.21s
-
-### CLI Commands
-
-| Command | Description | Key Options |
-|---------|-------------|-------------|
-| `portfolio` | Show current portfolio positions | `-s SYMBOL`, `-f {table,json,csv}` |
-| `history` | Show trade history | `-s SYMBOL`, `--start-date`, `--end-date`, `-d DAYS`, `--side` |
-| `analyze` | Run portfolio analytics | `-s SYMBOL`, `-m {pnl,exposure,value,all}`, `-f {table,json}` |
+- **Time:** 0.35s
 
 ### Acceptance Criteria Met
 
-- [x] CLI entry point in src/trade_analytics/cli.py
-- [x] Commands: portfolio, history, analyze
-- [x] Pretty table output for positions
-- [x] Date range filtering for history
-- [x] Error handling with user-friendly messages
+- [x] SQLite database with trades and positions tables
+- [x] CRUD operations for trades
+- [x] Query interface for positions
+- [x] Connection pooling and thread safety
