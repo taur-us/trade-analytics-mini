@@ -87,3 +87,54 @@ Implemented `PortfolioCalculator` class with three static methods for portfolio 
 - [x] calculate_exposure_by_symbol(positions) method
 - [x] All methods have comprehensive tests (31 tests)
 - [x] Handles edge cases: empty portfolio, missing market data
+
+---
+
+## CLI-001: Create CLI Interface
+
+**Task ID:** CLI-001
+**Branch:** feat/20251126-063844-cli-001
+**Status:** COMPLETE
+**Depends On:** CORE-001 (Completed), CORE-002 (Completed)
+
+### Summary
+
+Implemented a command-line interface (CLI) using Python's argparse module. The CLI provides three main commands: `portfolio` (show positions), `history` (show trades), and `analyze` (run analytics).
+
+### Files Created
+
+#### Source Files
+- `src/trade_analytics/cli.py` - CLI implementation with argparse parser and command handlers
+- `pyproject.toml` - Package configuration with CLI entry point
+
+#### Test Files
+- `tests/test_cli.py` - 53 comprehensive tests for CLI functionality
+
+#### Documentation
+- `deliverables/CLI-001-SUMMARY.md` - Implementation summary
+
+### Files Modified
+
+- `src/trade_analytics/__init__.py` - Added `cli_main` export
+
+### Test Results
+
+- **New Tests:** 53 passed
+- **Total Tests:** 144 passed
+- **Time:** 0.21s
+
+### CLI Commands
+
+| Command | Description | Key Options |
+|---------|-------------|-------------|
+| `portfolio` | Show current portfolio positions | `-s SYMBOL`, `-f {table,json,csv}` |
+| `history` | Show trade history | `-s SYMBOL`, `--start-date`, `--end-date`, `-d DAYS`, `--side` |
+| `analyze` | Run portfolio analytics | `-s SYMBOL`, `-m {pnl,exposure,value,all}`, `-f {table,json}` |
+
+### Acceptance Criteria Met
+
+- [x] CLI entry point in src/trade_analytics/cli.py
+- [x] Commands: portfolio, history, analyze
+- [x] Pretty table output for positions
+- [x] Date range filtering for history
+- [x] Error handling with user-friendly messages

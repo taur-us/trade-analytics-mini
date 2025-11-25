@@ -18,6 +18,7 @@ Example usage:
 """
 
 from .calculator import PortfolioCalculator
+from .cli import main as cli_main
 from .exceptions import (
     InsufficientFundsError,
     InvalidTradeError,
@@ -35,6 +36,8 @@ __all__ = [
     "MarketData",
     # Calculator
     "PortfolioCalculator",
+    # CLI
+    "cli_main",
     # Exceptions
     "TradingError",
     "InvalidTradeError",
