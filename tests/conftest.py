@@ -1,12 +1,21 @@
 """Pytest fixtures for trade_analytics tests."""
 
+import sys
+from pathlib import Path
+
+# Add src directory to path to allow imports
+src_path = Path(__file__).parent.parent / "src"
+if str(src_path) not in sys.path:
+    sys.path.insert(0, str(src_path))
+
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import Dict, List
+from typing import Dict, Generator, List
 
 import pytest
 
 from trade_analytics.models import MarketData, Position, Trade, TradeSide
+from trade_analytics.storage import PositionRepository, SQLiteStorage, TradeRepository
 
 
 @pytest.fixture
@@ -121,3 +130,27 @@ def single_market_data() -> Dict[str, MarketData]:
             volume=1000000,
         ),
     }
+
+
+# Storage test fixtures
+
+
+@pytest.fixture
+def storage() -> Generator[SQLiteStorage, None, None]:
+    """Create an in-memory SQLite storage for testing."""
+    storage = SQLiteStorage()
+    storage.connect()
+    yield storage
+    storage.disconnect()
+
+
+@pytest.fixture
+def trade_repo(storage: SQLiteStorage) -> TradeRepository:
+    """Create a TradeRepository with test storage."""
+    return TradeRepository(storage)
+
+
+@pytest.fixture
+def position_repo(storage: SQLiteStorage) -> PositionRepository:
+    """Create a PositionRepository with test storage."""
+    return PositionRepository(storage)

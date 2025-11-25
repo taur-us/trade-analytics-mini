@@ -87,3 +87,50 @@ Implemented `PortfolioCalculator` class with three static methods for portfolio 
 - [x] calculate_exposure_by_symbol(positions) method
 - [x] All methods have comprehensive tests (31 tests)
 - [x] Handles edge cases: empty portfolio, missing market data
+
+---
+
+## STORE-001: Add SQLite Storage Layer
+
+**Task ID:** STORE-001
+**Branch:** feat/20251126-062512-store-001
+**Status:** COMPLETE
+**Depends On:** CORE-001 (Completed)
+
+### Summary
+
+Implemented SQLite-based storage layer for persistent storage of trades and positions with thread-safe connection pooling.
+
+### Files Created
+
+#### Source Files
+- `src/trade_analytics/storage.py` - SQLite storage implementation:
+  - `SQLiteStorage` - Thread-safe database connection management
+  - `TradeRepository` - CRUD operations for trades
+  - `PositionRepository` - Query and upsert operations for positions
+
+#### Test Files
+- `tests/test_storage.py` - 53 comprehensive tests
+
+#### Documentation
+- `deliverables/STORE-001-SUMMARY.md` - Implementation summary
+
+### Files Modified
+
+- `src/trade_analytics/exceptions.py` - Added storage exceptions:
+  - `StorageError`, `RecordNotFoundError`, `DuplicateRecordError`, `DatabaseConnectionError`
+- `src/trade_analytics/__init__.py` - Exported storage classes and exceptions
+- `tests/conftest.py` - Added storage fixtures and path configuration
+
+### Test Results
+
+- **New Tests:** 53 passed
+- **Total Tests:** 144 passed
+- **Time:** 0.35s
+
+### Acceptance Criteria Met
+
+- [x] SQLite database with trades and positions tables
+- [x] CRUD operations for trades
+- [x] Query interface for positions
+- [x] Connection pooling and thread safety
