@@ -14,6 +14,11 @@ __all__ = [
     "InsufficientFundsError",
     "MarketClosedError",
     "MissingMarketDataError",
+    # Storage exceptions
+    "StorageError",
+    "RecordNotFoundError",
+    "DuplicateRecordError",
+    "DatabaseConnectionError",
 ]
 
 
@@ -156,3 +161,122 @@ class MissingMarketDataError(TradingError):
         super().__init__(message)
         self.symbol = symbol
         self.available_symbols = available_symbols or []
+
+
+class StorageError(TradingError):
+    """Base exception for all storage-related errors.
+
+    This exception is raised when a database operation fails due to
+    connection issues, query errors, or other storage-related problems.
+
+    Attributes:
+        message: Human-readable error description.
+        operation: The storage operation that failed (e.g., "read", "write").
+        original_error: The underlying exception that caused this error.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        operation: Optional[str] = None,
+        original_error: Optional[Exception] = None,
+    ) -> None:
+        """Initialize StorageError.
+
+        Args:
+            message: Human-readable error description.
+            operation: The storage operation that failed.
+            original_error: The underlying exception that caused this error.
+        """
+        super().__init__(message)
+        self.operation = operation
+        self.original_error = original_error
+
+
+class RecordNotFoundError(StorageError):
+    """Raised when a requested record doesn't exist.
+
+    This exception is raised when attempting to retrieve, update, or delete
+    a record that doesn't exist in the database.
+
+    Attributes:
+        message: Human-readable error description.
+        record_type: The type of record that was not found (e.g., "Trade", "Position").
+        record_id: The identifier of the record that was not found.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        record_type: Optional[str] = None,
+        record_id: Optional[str] = None,
+    ) -> None:
+        """Initialize RecordNotFoundError.
+
+        Args:
+            message: Human-readable error description.
+            record_type: The type of record that was not found.
+            record_id: The identifier of the record that was not found.
+        """
+        super().__init__(message, operation="read")
+        self.record_type = record_type
+        self.record_id = record_id
+
+
+class DuplicateRecordError(StorageError):
+    """Raised when attempting to create a duplicate record.
+
+    This exception is raised when attempting to insert a record with a
+    primary key or unique constraint that already exists.
+
+    Attributes:
+        message: Human-readable error description.
+        record_type: The type of record that caused the duplicate.
+        record_id: The identifier that is duplicated.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        record_type: Optional[str] = None,
+        record_id: Optional[str] = None,
+    ) -> None:
+        """Initialize DuplicateRecordError.
+
+        Args:
+            message: Human-readable error description.
+            record_type: The type of record that caused the duplicate.
+            record_id: The identifier that is duplicated.
+        """
+        super().__init__(message, operation="create")
+        self.record_type = record_type
+        self.record_id = record_id
+
+
+class DatabaseConnectionError(StorageError):
+    """Raised when database connection fails.
+
+    This exception is raised when the database connection cannot be
+    established or is lost during an operation.
+
+    Attributes:
+        message: Human-readable error description.
+        database_path: The path to the database that failed to connect.
+        original_error: The underlying exception that caused the connection failure.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        database_path: Optional[str] = None,
+        original_error: Optional[Exception] = None,
+    ) -> None:
+        """Initialize DatabaseConnectionError.
+
+        Args:
+            message: Human-readable error description.
+            database_path: The path to the database that failed to connect.
+            original_error: The underlying exception that caused the connection failure.
+        """
+        super().__init__(message, operation="connect", original_error=original_error)
+        self.database_path = database_path
