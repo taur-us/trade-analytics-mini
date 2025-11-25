@@ -5,7 +5,7 @@ exceptions that provide meaningful error messages and enable proper error recove
 """
 
 from decimal import Decimal
-from typing import Optional
+from typing import List, Optional
 
 
 __all__ = [
@@ -13,6 +13,7 @@ __all__ = [
     "InvalidTradeError",
     "InsufficientFundsError",
     "MarketClosedError",
+    "MissingMarketDataError",
 ]
 
 
@@ -125,3 +126,33 @@ class MarketClosedError(TradingError):
         super().__init__(message)
         self.symbol = symbol
         self.market_hours = market_hours
+
+
+class MissingMarketDataError(TradingError):
+    """Raised when market data is unavailable for a required symbol.
+
+    This exception is raised when a portfolio calculation requires market
+    data for a symbol that is not present in the provided market data dictionary.
+
+    Attributes:
+        message: Human-readable error description.
+        symbol: The symbol for which market data is missing.
+        available_symbols: List of symbols that have market data available.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        symbol: Optional[str] = None,
+        available_symbols: Optional[List[str]] = None,
+    ) -> None:
+        """Initialize MissingMarketDataError.
+
+        Args:
+            message: Human-readable error description.
+            symbol: The symbol for which market data is missing.
+            available_symbols: List of symbols that have market data available.
+        """
+        super().__init__(message)
+        self.symbol = symbol
+        self.available_symbols = available_symbols or []

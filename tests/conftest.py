@@ -2,6 +2,7 @@
 
 from datetime import datetime, timezone
 from decimal import Decimal
+from typing import Dict, List
 
 import pytest
 
@@ -43,3 +44,80 @@ def sample_market_data() -> MarketData:
         volume=1000000,
         timestamp=datetime(2024, 1, 15, 10, 30, 0, tzinfo=timezone.utc),
     )
+
+
+# Calculator test fixtures
+
+
+@pytest.fixture
+def multi_position_portfolio() -> List[Position]:
+    """Create a multi-position portfolio for calculator tests."""
+    return [
+        Position(
+            symbol="AAPL",
+            quantity=Decimal("100"),
+            avg_price=Decimal("150.00"),
+        ),
+        Position(
+            symbol="GOOGL",
+            quantity=Decimal("-50"),  # Short position
+            avg_price=Decimal("140.00"),
+        ),
+        Position(
+            symbol="MSFT",
+            quantity=Decimal("200"),
+            avg_price=Decimal("380.00"),
+        ),
+    ]
+
+
+@pytest.fixture
+def multi_symbol_market_data() -> Dict[str, MarketData]:
+    """Create market data for multiple symbols."""
+    return {
+        "AAPL": MarketData(
+            symbol="AAPL",
+            bid=Decimal("155.00"),
+            ask=Decimal("155.10"),
+            last=Decimal("155.05"),
+            volume=1000000,
+        ),
+        "GOOGL": MarketData(
+            symbol="GOOGL",
+            bid=Decimal("145.00"),
+            ask=Decimal("145.10"),
+            last=Decimal("145.05"),
+            volume=500000,
+        ),
+        "MSFT": MarketData(
+            symbol="MSFT",
+            bid=Decimal("385.00"),
+            ask=Decimal("385.20"),
+            last=Decimal("385.10"),
+            volume=750000,
+        ),
+    }
+
+
+@pytest.fixture
+def single_position() -> Position:
+    """Create a single position for simple tests."""
+    return Position(
+        symbol="AAPL",
+        quantity=Decimal("100"),
+        avg_price=Decimal("150.00"),
+    )
+
+
+@pytest.fixture
+def single_market_data() -> Dict[str, MarketData]:
+    """Create market data for a single symbol."""
+    return {
+        "AAPL": MarketData(
+            symbol="AAPL",
+            bid=Decimal("155.00"),
+            ask=Decimal("155.10"),
+            last=Decimal("155.05"),
+            volume=1000000,
+        ),
+    }

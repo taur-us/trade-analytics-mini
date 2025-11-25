@@ -17,10 +17,12 @@ Example usage:
     )
 """
 
+from .calculator import PortfolioCalculator
 from .exceptions import (
     InsufficientFundsError,
     InvalidTradeError,
     MarketClosedError,
+    MissingMarketDataError,
     TradingError,
 )
 from .models import MarketData, Position, Trade, TradeSide
@@ -31,11 +33,14 @@ __all__ = [
     "Trade",
     "Position",
     "MarketData",
+    # Calculator
+    "PortfolioCalculator",
     # Exceptions
     "TradingError",
     "InvalidTradeError",
     "InsufficientFundsError",
     "MarketClosedError",
+    "MissingMarketDataError",
 ]
 
 __version__ = "0.1.0"
