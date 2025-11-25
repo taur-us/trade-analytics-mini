@@ -17,6 +17,17 @@ Example usage:
     )
 """
 
+from .cli import (
+    cmd_analyze,
+    cmd_history,
+    cmd_portfolio,
+    create_parser,
+    format_error,
+    format_positions_table,
+    format_trades_table,
+    main,
+    parse_date,
+)
 from .exceptions import (
     InsufficientFundsError,
     InvalidTradeError,
@@ -36,6 +47,16 @@ __all__ = [
     "InvalidTradeError",
     "InsufficientFundsError",
     "MarketClosedError",
+    # CLI
+    "main",
+    "create_parser",
+    "format_positions_table",
+    "format_trades_table",
+    "format_error",
+    "parse_date",
+    "cmd_portfolio",
+    "cmd_history",
+    "cmd_analyze",
 ]
 
 __version__ = "0.1.0"
