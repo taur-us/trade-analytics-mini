@@ -21,9 +21,11 @@ from .exceptions import (
     InsufficientFundsError,
     InvalidTradeError,
     MarketClosedError,
+    StorageError,
     TradingError,
 )
 from .models import MarketData, Position, Trade, TradeSide
+from .storage import TradeStore
 
 __all__ = [
     # Models
@@ -36,6 +38,9 @@ __all__ = [
     "InvalidTradeError",
     "InsufficientFundsError",
     "MarketClosedError",
+    "StorageError",
+    # Storage
+    "TradeStore",
 ]
 
 __version__ = "0.1.0"

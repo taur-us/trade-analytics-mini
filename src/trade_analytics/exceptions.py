@@ -13,6 +13,7 @@ __all__ = [
     "InvalidTradeError",
     "InsufficientFundsError",
     "MarketClosedError",
+    "StorageError",
 ]
 
 
@@ -125,3 +126,30 @@ class MarketClosedError(TradingError):
         super().__init__(message)
         self.symbol = symbol
         self.market_hours = market_hours
+
+
+class StorageError(TradingError):
+    """Raised when a storage operation fails.
+
+    Attributes:
+        message: Human-readable error description.
+        operation: The operation that failed (e.g., "save_trade", "get_trades").
+        original_error: The underlying database error, if any.
+    """
+
+    def __init__(
+        self,
+        message: str,
+        operation: Optional[str] = None,
+        original_error: Optional[Exception] = None,
+    ) -> None:
+        """Initialize StorageError.
+
+        Args:
+            message: Human-readable error description.
+            operation: The operation that failed (e.g., "save_trade", "get_trades").
+            original_error: The underlying database error, if any.
+        """
+        super().__init__(message)
+        self.operation = operation
+        self.original_error = original_error
