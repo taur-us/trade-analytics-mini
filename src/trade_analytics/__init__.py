@@ -18,6 +18,7 @@ Example usage:
 """
 
 from .calculator import PortfolioCalculator
+from .cli import main as cli_main
 from .exceptions import (
     DatabaseConnectionError,
     DuplicateRecordError,
@@ -40,6 +41,8 @@ __all__ = [
     "MarketData",
     # Calculator
     "PortfolioCalculator",
+    # CLI
+    "cli_main",
     # Storage
     "SQLiteStorage",
     "TradeRepository",
